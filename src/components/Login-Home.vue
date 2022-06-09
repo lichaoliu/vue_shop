@@ -9,11 +9,11 @@
             <el-form label-width="0px" class="login_form">
                 <!-- 用户名 -->
                 <el-form-item>
-                    <el-input></el-input>
+                    <el-input :prefix-icon="Search"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item>
-                    <el-input></el-input>
+                    <el-input :prefix-icon="Search"></el-input>
                 </el-form-item>
                 <!-- 按钮区域 -->
                 <el-form-item class="btns">
@@ -62,20 +62,13 @@
         }
     }
 
-    // // 设置justify-content生效
-    // /deep/.el-form-item__content {
-    //     flex: unset;
-
-    // }
-
     .login_form {
         position: absolute;
         bottom: 0;
         width: 100%;
-        padding: 0 20px;
+        padding: 0, 30px;
         box-sizing: border-box;
     }
-
     .btns {
         display: flex;
         justify-content: flex-end;
