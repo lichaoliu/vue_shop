@@ -3,6 +3,7 @@ import {
   createWebHistory
 } from 'vue-router'
 import Login from './components/Login-Home.vue'
+import Home from './components/Home-LLC.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,6 +13,9 @@ const router = createRouter({
   }, {
     path: '/login',
     component: Login
+  }, {
+    path: '/home',
+    component: Home
   }]
 })
 export default router
