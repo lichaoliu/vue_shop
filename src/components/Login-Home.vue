@@ -7,28 +7,66 @@
              alt="" />
       </div>
       <!-- 登录表单区域 -->
-      <el-form label-width="0px"
+      <el-form ref="loginFormRef"
+               label-width="0px"
+               :model="loginForm"
+               :rules="loginFormRules"
                class="login_form">
         <!-- 用户名 -->
-        <el-form-item>
-          <el-input placeholder="Type something"
+        <el-form-item prop="username">
+          <el-input v-model="loginForm.username"
                     prefix-icon="User" />
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
-          <el-input placeholder="Type something"
+        <el-form-item prop="password">
+          <el-input v-model="loginForm.password"
+                    type="password"
                     prefix-icon="Lock" />
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class="btns">
-          <el-button type="primary">登录</el-button>
-          <el-button type="info">重置</el-button>
+          <el-button type="primary"
+                     @click="login">登录</el-button>
+          <el-button type="info"
+                     @click="resetloginForm">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
 <script>
+export default {
+  data () {
+    return {
+      // 这是登录表单的数据绑定对象
+      loginForm: {
+        username: 'zs',
+        password: '123'
+      },
+      // 这是表单的验证规则对象
+      loginFormRules: {
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度 3 到 10个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度 6 到 15个字符', trigger: 'blur' }]
+      }
+    }
+  },
+  methods: {
+    // 点击重置按钮 重置表单
+    resetloginForm () {
+      this.$refs.loginFormRef.resetFields()
+    },
+    login () {
+      this.$refs.loginFormRef.validate(valid => {
+        console.log(valid)
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .login_container {
