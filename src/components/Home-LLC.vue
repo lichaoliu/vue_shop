@@ -23,8 +23,7 @@
                        :key="item.id">
             <template #title>
               <!-- 图标 -->
-              <el-icon>
-                <shangpin />
+              <el-icon :class="iconObj[item.id]">
               </el-icon>
               <!-- 文本 -->
               <span>{{item.authName}}</span>
@@ -35,7 +34,7 @@
                           :key="subItem.id">
               <!-- 图标 -->
               <el-icon>
-                <Menu />
+                <location />
               </el-icon>
               <!-- 文本 -->
               <span>{{subItem.authName}}</span>
@@ -54,11 +53,11 @@ export default {
     return {
       menuList: [],
       iconObj: {
-        125: 'iconfont users',
-        103: 'iconfont tijikongjian',
-        101: 'iconfont shangpin',
-        102: 'iconfont danju',
-        145: 'iconfont baobiao'
+        125: 'iconfont icon-users',
+        103: 'iconfont icon-tijikongjian',
+        101: 'iconfont icon-shangpin',
+        102: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
       }
     }
   },

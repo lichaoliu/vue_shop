@@ -6,6 +6,7 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './assets/css/global.css'
+import './assets/fonts/iconfont.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios'
 
