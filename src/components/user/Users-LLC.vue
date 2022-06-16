@@ -38,8 +38,29 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" />
+        <el-table-column label="操作"
+                         width="200px">
+          <!-- <template v-slot="scope"> -->
+          <el-button type="primary"
+                     icon="Edit" />
+          <el-button type="danger"
+                     icon="Delete" />
+          <el-tooltip content="修改角色"
+                      placement="top"
+                      :enterable="false">
+            <el-button type="warning"
+                       icon="Setting" />
+          </el-tooltip>
+          <!-- </template> -->
+        </el-table-column>
       </el-table>
+      <el-pagination v-model:currentPage="queryInfo.pagenum"
+                     v-model:page-size="queryInfo.pagesize"
+                     :page-sizes="[1, 2, 5, 10]"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total"
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange" />
     </el-card>
   </div>
 </template>
@@ -66,6 +87,14 @@ export default {
       this.userList = res.data.users
       this.total = res.data.total
       console.log(res)
+    },
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getUserList()
+    },
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getUserList()
     }
   }
 }

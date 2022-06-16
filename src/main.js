@@ -5,6 +5,8 @@ import router from './router'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import 'dayjs/locale/zh-cn'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -23,5 +25,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.config.globalProperties.$http = axios
 app.use(router)
-app.use(ElementPlus)
+app.use(ElementPlus, {
+  locale
+})
 app.mount('#app')
