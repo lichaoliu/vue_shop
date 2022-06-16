@@ -9,14 +9,19 @@
       <!-- 搜索与添加区域 -->
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入内容">
+          <el-input placeholder="请输入内容"
+                    v-model="queryInfo.query"
+                    clearable
+                    @clear="getUserList">
             <template #append>
-              <el-button icon="Search" />
+              <el-button icon="Search"
+                         @click="getUserList" />
             </template>
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">添加用户</el-button>
+          <el-button type="primary"
+                     @click="addDialogVisble = true">添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 表格区域 -->
@@ -34,7 +39,8 @@
                          label="角色" />
         <el-table-column label="状态">
           <template v-slot="scope">
-            <el-switch v-model="scope.row.mg_state">
+            <el-switch v-model="scope.row.mg_state"
+                       @change="userStateChanged(scope.row)">
             </el-switch>
           </template>
         </el-table-column>
@@ -62,6 +68,29 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange" />
     </el-card>
+    <!-- 添加用户对话框 -->
+    <el-dialog v-model="addDialogVisble"
+               title="添加用户"
+               width="30%">
+      <!-- 用户表单 -->
+      <el-form ref="ruleFormRef"
+               :model="addForm"
+               :rules="addFormRules"
+               label-width="120px"
+               status-icon>
+        <el-form-item label="用户名"
+                      prop="username">
+          <el-input v-model="addForm.name" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addDialogVisble = false">取 消</el-button>
+          <el-button type="primary"
+                     @click="addDialogVisble = false">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -74,7 +103,15 @@ export default {
         pagesize: 2
       },
       userList: [],
-      total: 0
+      total: 0,
+      addDialogVisble: false,
+      addForm: {
+        username: ''
+      },
+      addFormRules: {
+        username: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },
+        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }]
+      }
     }
   },
   created () {
@@ -95,6 +132,14 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getUserList()
+    },
+    async userStateChanged (userInfo) {
+      const { data: res } = await this.$http.put('users/' + userInfo.id + '/state/' + userInfo.mg_state)
+      if (res.meta.status !== 200) {
+        userInfo.mg_state = !userInfo.mg_state
+        return this.$message.error('修改用户状态失败')
+      }
+      return this.$message.success('修改用户状态成功')
     }
   }
 }
