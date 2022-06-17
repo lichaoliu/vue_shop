@@ -71,7 +71,8 @@
     <!-- 添加用户对话框 -->
     <el-dialog v-model="addDialogVisble"
                title="添加用户"
-               width="30%">
+               width="30%"
+               @close="resetFormFileds">
       <!-- 用户表单 -->
       <el-form ref="ruleFormRef"
                :model="addForm"
@@ -80,14 +81,26 @@
                status-icon>
         <el-form-item label="用户名"
                       prop="username">
-          <el-input v-model="addForm.name" />
+          <el-input v-model="addForm.username" />
+        </el-form-item>
+        <el-form-item label="密码"
+                      prop="password">
+          <el-input v-model="addForm.password" />
+        </el-form-item>
+        <el-form-item label="邮箱"
+                      prop="email">
+          <el-input v-model="addForm.email" />
+        </el-form-item>
+        <el-form-item label="手机"
+                      prop="mobile">
+          <el-input v-model="addForm.mobile" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addDialogVisble = false">取 消</el-button>
           <el-button type="primary"
-                     @click="addDialogVisble = false">确 定</el-button>
+                     @click="addUser">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -96,6 +109,24 @@
 <script>
 export default {
   data () {
+    // 验证邮箱规则
+    const checkEmail = (rule, value, callback) => {
+      const regexEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+      if (regexEmail.test(value)) {
+        // 合法的邮箱
+        callback()
+      }
+      callback(new Error('请输入合法的邮箱'))
+    }
+    // 手机号规则
+    const checkMobile = (rule, value, callback) => {
+      const regexMobile = /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
+      if (regexMobile.test(value)) {
+        // 合法的邮箱
+        callback()
+      }
+      callback(new Error('请输入合法的手机号'))
+    }
     return {
       queryInfo: {
         query: '',
@@ -106,11 +137,20 @@ export default {
       total: 0,
       addDialogVisble: false,
       addForm: {
-        username: ''
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
       },
       addFormRules: {
-        username: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }]
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' },
+        { min: 3, max: 10, message: '用户名必须在3-10个字符之间', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 15, message: '密码必须在6-15个字符之间', trigger: 'blur' }],
+        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' },
+        { validator: checkEmail, trigger: 'blur' }],
+        mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' },
+        { validator: checkMobile, trigger: 'blur' }]
       }
     }
   },
@@ -140,6 +180,21 @@ export default {
         return this.$message.error('修改用户状态失败')
       }
       return this.$message.success('修改用户状态成功')
+    },
+    resetFormFileds () {
+      this.$refs.ruleFormRef.resetFields()
+    },
+    addUser () {
+      this.$refs.ruleFormRef.validate(async isValid => {
+        if (!isValid) return
+        const { data: res } = await this.$http.post('users', this.addForm)
+        if (res.meta.status !== 201) {
+          this.$message.error('添加用户失败')
+        }
+        this.$message.success('添加用户成功')
+        this.addDialogVisble = false
+        this.getUserList()
+      })
     }
   }
 }
