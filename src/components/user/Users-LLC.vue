@@ -26,8 +26,8 @@
       </el-row>
       <!-- 表格区域 -->
       <el-table :data="userList"
-                stripe
-                border>
+                :stripe ="true"
+                :border="true">
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="username"
                          label="姓名" />

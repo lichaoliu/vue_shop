@@ -6,6 +6,8 @@ import Login from './components/Login-Home.vue'
 import Home from './components/Home-LLC.vue'
 import Welcome from './components/Welcome-LLC.vue'
 import Users from './components/user/Users-LLC.vue'
+import Rigths from './components/power/Rigths-LLC.vue'
+import Roles from './components/power/Roles-LLC.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,6 +27,12 @@ const router = createRouter({
     }, {
       path: '/users',
       component: Users
+    }, {
+      path: '/rights',
+      component: Rigths
+    }, {
+      path: '/roles',
+      component: Roles
     }]
   }]
 })
