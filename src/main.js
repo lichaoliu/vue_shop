@@ -23,10 +23,10 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
-
+app.component('tree-table', ZkTable)
 app.config.globalProperties.$http = axios
 app.use(router)
-app.use(ZkTable)
+// app.use(ZkTable)
 app.use(ElementPlus, {
   locale
 })

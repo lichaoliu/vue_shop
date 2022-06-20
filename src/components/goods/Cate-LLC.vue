@@ -11,8 +11,8 @@
           <el-button type="primary">添加分类</el-button>
         </el-col>
       </el-row>
-      <!-- <zk-table :data="cateList"
-                :columns="columns"></zk-table> -->
+      <!-- <tree-table :data="cateList"
+                  :columns="columns"></tree-table> -->
     </el-card>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
       }
       this.cateList = res.data.result
       this.total = res.data.total
-      console.log(res)
+      console.log(this.cateList)
     }
   }
 }

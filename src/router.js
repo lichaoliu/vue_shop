@@ -9,6 +9,7 @@ import Users from './components/user/Users-LLC.vue'
 import Rigths from './components/power/Rigths-LLC.vue'
 import Roles from './components/power/Roles-LLC.vue'
 import Cate from './components/goods/Cate-LLC.vue'
+import Params from './components/goods/Params-LLC.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,6 +38,9 @@ const router = createRouter({
     }, {
       path: '/categories',
       component: Cate
+    }, {
+      path: '/params',
+      component: Params
     }]
   }]
 })
