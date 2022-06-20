@@ -29,6 +29,23 @@
           <el-button type="primary"
                      size="small"
                      :disabled="isBtnDisabled">添加参数</el-button>
+          <!-- 动态参数表格 -->
+          <el-table :data="manyTableData"
+                    :border="true"
+                    stripe>
+            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="参数名称"
+                             prop="attr_name"></el-table-column>
+            <el-table-column label="操作">
+              <!-- <template slot-scope="scope"> -->
+              <el-button type="primary"
+                         icon="Edit">编 辑</el-button>
+              <el-button type="danger"
+                         icon="Delete">删 除</el-button>
+              <!-- </template> -->
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
         <el-tab-pane label="静态参数"
                      name="only">
@@ -36,6 +53,23 @@
           <el-button type="primary"
                      size="small"
                      :disabled="isBtnDisabled">添加参数</el-button>
+          <!-- 静态参数表格 -->
+          <el-table :data="onlyTableData"
+                    :border="true"
+                    stripe>
+            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="属性名称"
+                             prop="attr_name"></el-table-column>
+            <el-table-column label="操作">
+              <!-- <template slot-scope="scope"> -->
+              <el-button type="primary"
+                         icon="Edit">编 辑</el-button>
+              <el-button type="danger"
+                         icon="Delete">删 除</el-button>
+              <!-- </template> -->
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -54,7 +88,11 @@ export default {
       // 级联选择框选中的值
       selectedCateKeys: [],
       // 标签区域选择的值
-      activeName: 'many'
+      activeName: 'many',
+      // 动态属性数据
+      manyTableData: [],
+      // 静态属性数据
+      onlyTableData: []
     }
   },
   created () {
@@ -70,7 +108,16 @@ export default {
       console.log(this.cateList)
     },
     // 级联选择框数据变化触发这个函数
-    async handleChange () {
+    handleChange () {
+      this.getParamsData()
+    },
+    // 标签区域切换触发的事件
+    handleTabClick () {
+      console.log('切换的是' + this.activeName)
+      this.getParamsData()
+    },
+    // 获取所选分类参数
+    async getParamsData () {
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         return
@@ -80,12 +127,14 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取对应参数失败')
       }
-      console.log(res)
-    },
-    // 标签区域切换触发的事件
-    handleTabClick () {
-      console.log(this.activeName)
+      if (this.activeName === 'many') {
+        // 动态属性数据
+        this.manyTableData = res.data
+      } else {
+        this.onlyTableData = res.data
+      }
     }
+
   },
   computed: {
     // tab区域按钮是否禁用
