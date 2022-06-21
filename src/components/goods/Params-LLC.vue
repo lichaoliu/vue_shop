@@ -22,7 +22,7 @@
       </el-row>
       <!-- tab标签区域 -->
       <el-tabs v-model="activeName"
-               @tab-click="handleTabClick">
+               @tab-change="handleTabClick">
         <el-tab-pane label="动态参数"
                      name="many">
           <!-- 添加动态参数 -->
